@@ -1,222 +1,140 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HSK 1 - Chinese Learning</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-        header {
-            background: #c62828;
-            color: white;
-            text-align: center;
-            padding: 25px 15px;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 30px;
-        }
-        header p {
-            margin: 8px 0 0;
-            font-size: 16px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 0 15px;
-        }
-        .back {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #c62828;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        /* =========================
-           FLASHCARD
-        ========================= */
-        .flashcard-box {
-            background: white;
-            padding: 30px 20px;
-            border-radius: 15px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .flashcard-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-        .flashcard-chinese {
-            font-size: 48px;
-            font-weight: bold;
-            color: #c62828;
-            margin: 20px 0;
-        }
-        .flashcard-question {
-            font-size: 18px;
-            color: #555;
-            margin: 20px 0;
-        }
-        .answer {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 10px;
-        }
-        .answer.show {
-            display: block;
-        }
-        .answer-meaning {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .answer-pinyin {
-            margin-top: 8px;
-            font-size: 18px;
-            color: #666;
-        }
-        /* =========================
-           BUTTONS
-        ========================= */
-        button {
-            border: none;
-            border-radius: 8px;
-            padding: 10px 16px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .speak {
-            background: #c62828;
-            color: white;
-            margin: 5px;
-        }
-        .speak:hover {
-            background: #a91f1f;
-        }
-        .show-answer {
-            background: #333;
-            color: white;
-            margin-top: 15px;
-        }
-        .memory-buttons {
-            margin-top: 20px;
-        }
-        .memory-btn {
-            padding: 10px 18px;
-            margin: 5px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .not-remember {
-            background: #eee;
-            color: #333;
-        }
-        .remembered {
-            background: #2e7d32;
-            color: white;
-        }
-        .navigation {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 25px;
-        }
-        .navigation button {
-            background: #eee;
-            color: #333;
-        }
-        .counter {
-            margin-top: 15px;
-            color: #888;
-            font-size: 14px;
-        }
-        .progress {
-            margin-top: 10px;
-            color: #666;
-            font-size: 16px;
-        }
-        /* =========================
-           SEARCH
-        ========================= */
-        .search {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 14px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-        /* =========================
-           WORD LIST
-        ========================= */
-        .word {
-            background: white;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .word:hover {
-            transform: translateY(-2px);
-        }
-        .chinese {
-            font-size: 32px;
-            font-weight: bold;
-            color: #c62828;
-        }
-        .pinyin {
-            font-size: 18px;
-            color: #555;
-            margin-top: 5px;
-        }
-        .meaning {
-            font-size: 17px;
-            margin-top: 8px;
-        }
-        .detail {
-            display: none;
-            margin-top: 18px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-        .word.active .detail {
-            display: block;
-        }
-        .example {
-            font-size: 22px;
-            margin-top: 12px;
-        }
-        .example-pinyin {
-            margin-top: 6px;
-            color: #666;
-            font-size: 16px;
-        }
-        .example-meaning {
-            margin-top: 6px;
-            color: #555;
-            font-size: 16px;
-        }
-        footer {
-            text-align: center;
-            padding: 30px 15px;
-            color: #888;
-            font-size: 14px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HSK 1 - Chinese Learning</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f5f5f5;
+    color: #333;
+}
+header {
+    background: #c62828;
+    color: white;
+    text-align: center;
+    padding: 25px 10px;
+}
+header h1 {
+    margin: 0;
+}
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+.back {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #c62828;
+    text-decoration: none;
+    font-weight: bold;
+}
+.flashcard {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+}
+.flashcard h2 {
+    font-size: 42px;
+    margin: 10px 0;
+}
+.pinyin {
+    color: #777;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+button {
+    border: none;
+    padding: 10px 16px;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+.listen {
+    background: #2196f3;
+    color: white;
+}
+.answer-btn {
+    background: #ff9800;
+    color: white;
+}
+.remember {
+    background: #4caf50;
+    color: white;
+}
+.not-remember {
+    background: #f44336;
+    color: white;
+}
+.nav-btn {
+    background: #eeeeee;
+}
+.answer {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f1f8e9;
+    border-radius: 10px;
+}
+.hidden {
+    display: none;
+}
+.progress {
+    margin-top: 15px;
+    font-weight: bold;
+}
+.search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+.word-card {
+    background: white;
+    padding: 18px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+}
+.word-card:hover {
+    background: #fff8f8;
+}
+.word {
+    font-size: 28px;
+    font-weight: bold;
+}
+.meaning {
+    margin-top: 5px;
+    color: #555;
+}
+.example {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+.example-pinyin {
+    color: #777;
+    margin: 5px 0;
+}
+.example-meaning {
+    color: #555;
+}
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #777;
+}
+</style>
 </head>
 <body>
 <header>
@@ -224,61 +142,50 @@
     <p>基础汉语词汇</p>
 </header>
 <div class="container">
-    <a href="hsk.html" class="back">← Quay lại HSK</a>
+    <a class="back" href="hsk.html">
+        ← Quay lại HSK
+    </a>
     <!-- FLASHCARD -->
-    <div class="flashcard-box">
-        <div class="flashcard-title">
-            🃏 Học từ vựng
-        </div>
-        <div id="flashcardChinese" class="flashcard-chinese">
-            你好
-        </div>
-        <button id="speakWord" class="speak">
+    <div class="flashcard">
+        <h2 id="flashWord">
+            Đang tải...
+        </h2>
+        <div id="flashPinyin" class="pinyin"></div>
+        <button class="listen" onclick="speakCurrentWord()">
             🔊 Nghe từ
         </button>
-        <div class="flashcard-question">
+        <p>
             ❓ Bạn nhớ nghĩa của từ này không?
-        </div>
-        <button id="showAnswer" class="show-answer">
+        </p>
+        <button class="answer-btn" onclick="showAnswer()">
             👀 Hiện đáp án
         </button>
-        <div id="answer" class="answer">
-            <div id="answerMeaning" class="answer-meaning">
-                Xin chào
-            </div>
-            <div id="answerPinyin" class="answer-pinyin">
-                nǐ hǎo
-            </div>
-            <button id="speakExample" class="speak">
+        <div id="answer" class="answer hidden">
+            <div id="flashMeaning"></div>
+            <div id="flashExample"></div>
+            <div id="flashExamplePinyin"></div>
+            <button class="listen" onclick="speakCurrentExample()">
                 🔊 Nghe câu ví dụ
             </button>
-            <div class="memory-buttons">
-                <button
-                    id="notRemembered"
-                    class="memory-btn not-remember">
-                    ❌ Chưa nhớ
-                </button>
-                <button
-                    id="remembered"
-                    class="memory-btn remembered">
-                    ✅ Đã nhớ
-                </button>
-            </div>
         </div>
-        <div class="navigation">
-            <button id="previous">
+        <div>
+            <button class="not-remember" onclick="notRemember()">
+                ❌ Chưa nhớ
+            </button>
+            <button class="remember" onclick="remember()">
+                ✅ Đã nhớ
+            </button>
+        </div>
+        <div>
+            <button class="nav-btn" onclick="previousWord()">
                 ← Từ trước
             </button>
-            <button id="next">
+            <button class="nav-btn" onclick="nextWord()">
                 Từ tiếp theo →
             </button>
         </div>
-        <div id="counter" class="counter">
-            1 / 5
-        </div>
-        <div id="progress" class="progress">
-            📊 Đã nhớ: 0 / 5
-        </div>
+        <div id="counter"></div>
+        <div id="progress" class="progress"></div>
     </div>
     <!-- SEARCH -->
     <input
@@ -286,6 +193,7 @@
         id="search"
         class="search"
         placeholder="🔍 Tìm từ tiếng Trung, pinyin hoặc nghĩa..."
+        oninput="searchWords()"
     >
     <!-- WORD LIST -->
     <div id="wordList"></div>
@@ -294,51 +202,129 @@
     Chinese Learning © 2026
 </footer>
 <script>
-const words = [
-    {
-        chinese: "你好",
-        pinyin: "nǐ hǎo",
-        meaning: "Xin chào",
-        example: "你好！你叫什么名字？",
-        examplePinyin: "Nǐ hǎo! Nǐ jiào shénme míngzi?",
-        exampleMeaning: "Xin chào! Bạn tên là gì?"
-    },
-    {
-        chinese: "我",
-        pinyin: "wǒ",
-        meaning: "Tôi",
-        example: "我是学生。",
-        examplePinyin: "Wǒ shì xuésheng.",
-        exampleMeaning: "Tôi là học sinh."
-    },
-    {
-        chinese: "你",
-        pinyin: "nǐ",
-        meaning: "Bạn",
-        example: "你好吗？",
-        examplePinyin: "Nǐ hǎo ma?",
-        exampleMeaning: "Bạn khỏe không?"
-    },
-    {
-        chinese: "他",
-        pinyin: "tā",
-        meaning: "Anh ấy",
-        example: "他是老师。",
-        examplePinyin: "Tā shì lǎoshī.",
-        exampleMeaning: "Anh ấy là giáo viên."
-    },
-    {
-        chinese: "学生",
-        pinyin: "xuésheng",
-        meaning: "Học sinh",
-        example: "我是学生。",
-        examplePinyin: "Wǒ shì xuésheng.",
-        exampleMeaning: "Tôi là học sinh."
+let words = [];
+let currentIndex = 0;
+let rememberedWords =
+    JSON.parse(
+        localStorage.getItem("hsk1Remembered") || "[]"
+    );
+// ================================
+// ĐỌC FILE CSV
+// ================================
+async function loadWords() {
+    try {
+        const response =
+            await fetch("hsk1.csv");
+        if (!response.ok) {
+            throw new Error(
+                "Không đọc được file hsk1.csv"
+            );
+        }
+        const text =
+            await response.text();
+        const rows =
+            parseCSV(text);
+        words =
+            rows
+                .slice(1)
+                .filter(row => row.length >= 6)
+                .map(row => ({
+                    chinese: row[0],
+                    pinyin: row[1],
+                    meaning: row[2],
+                    example: row[3],
+                    examplePinyin: row[4],
+                    exampleMeaning: row[5]
+                }));
+        if (words.length === 0) {
+            throw new Error(
+                "File CSV không có dữ liệu."
+            );
+        }
+        updateFlashcard();
+        displayWords(words);
     }
-];
-/* =========================
-   PHÁT ÂM
-========================= */
+    catch (error) {
+        document.getElementById(
+            "flashWord"
+        ).textContent = "⚠️ Lỗi";
+        document.getElementById(
+            "flashPinyin"
+        ).textContent = error.message;
+    }
+}
+// ================================
+// ĐỌC CSV
+// ================================
+function parseCSV(text) {
+    const rows = [];
+    let row = [];
+    let cell = "";
+    let inQuotes = false;
+    for (
+        let i = 0;
+        i < text.length;
+        i++
+    ) {
+        const c = text[i];
+        const next = text[i + 1];
+        if (c === '"') {
+            if (
+                inQuotes &&
+                next === '"'
+            ) {
+                cell += '"';
+                i++;
+            }
+            else {
+                inQuotes = !inQuotes;
+            }
+        }
+        else if (
+            c === "," &&
+            !inQuotes
+        ) {
+            row.push(cell);
+            cell = "";
+        }
+        else if (
+            (c === "\n" || c === "\r") &&
+            !inQuotes
+        ) {
+            if (
+                c === "\r" &&
+                next === "\n"
+            ) {
+                i++;
+            }
+            row.push(cell);
+            cell = "";
+            if (
+                row.some(
+                    x => x !== ""
+                )
+            ) {
+                rows.push(row);
+            }
+            row = [];
+        }
+        else {
+            cell += c;
+        }
+    }
+    row.push(cell);
+    if (
+        row.some(
+            x => x !== ""
+        )
+    ) {
+        rows.push(row);
+    }
+    return rows;
+}
+// ================================
+// PHÁT ÂM
+// ================================
 function speakChinese(text) {
     const speech =
         new SpeechSynthesisUtterance(text);
@@ -347,222 +333,252 @@ function speakChinese(text) {
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(speech);
 }
-/* =========================
-   FLASHCARD
-========================= */
-let currentIndex = 0;
-/* Đọc trạng thái đã nhớ */
-let rememberedWords = JSON.parse(
-    localStorage.getItem("hsk1Remembered") || "[]"
-);
-const flashcardChinese =
-    document.getElementById("flashcardChinese");
-const answer =
-    document.getElementById("answer");
-const answerMeaning =
-    document.getElementById("answerMeaning");
-const answerPinyin =
-    document.getElementById("answerPinyin");
-const counter =
-    document.getElementById("counter");
-const progress =
-    document.getElementById("progress");
-function updateProgress() {
-    progress.textContent =
-        "📊 Đã nhớ: " +
-        rememberedWords.length +
-        " / " +
-        words.length;
-}
-function showFlashcard() {
-    const word = words[currentIndex];
-    flashcardChinese.textContent =
+// ================================
+// FLASHCARD
+// ================================
+function updateFlashcard() {
+    if (!words.length) return;
+    const word =
+        words[currentIndex];
+    document.getElementById(
+        "flashWord"
+    ).textContent =
         word.chinese;
-    answerMeaning.textContent =
-        word.meaning;
-    answerPinyin.textContent =
+    document.getElementById(
+        "flashPinyin"
+    ).textContent =
         word.pinyin;
-    counter.textContent =
-        (currentIndex + 1) +
-        " / " +
-        words.length;
-    answer.classList.remove("show");
+    document.getElementById(
+        "flashMeaning"
+    ).textContent =
+        "🇻🇳 " + word.meaning;
+    document.getElementById(
+        "flashExample"
+    ).textContent =
+        "例句： " + word.example;
+    document.getElementById(
+        "flashExamplePinyin"
+    ).textContent =
+        word.examplePinyin;
+    document.getElementById(
+        "counter"
+    ).textContent =
+        (currentIndex + 1)
+        + " / "
+        + words.length;
+    document.getElementById(
+        "answer"
+    ).classList.add("hidden");
     updateProgress();
 }
-/* Hiện đáp án */
-document
-    .getElementById("showAnswer")
-    .addEventListener("click", function() {
-        answer.classList.add("show");
-    });
-/* Đọc từ */
-document
-    .getElementById("speakWord")
-    .addEventListener("click", function() {
-        speakChinese(
-            words[currentIndex].chinese
-        );
-    });
-/* Đọc câu ví dụ */
-document
-    .getElementById("speakExample")
-    .addEventListener("click", function() {
-        speakChinese(
-            words[currentIndex].example
-        );
-    });
-/* Chưa nhớ */
-document
-    .getElementById("notRemembered")
-    .addEventListener("click", function() {
-        const word =
-            words[currentIndex].chinese;
-        rememberedWords =
-            rememberedWords.filter(function(item) {
-                return item !== word;
-            });
-        localStorage.setItem(
-            "hsk1Remembered",
-            JSON.stringify(rememberedWords)
-        );
-        currentIndex++;
-        if (currentIndex >= words.length) {
-            currentIndex = 0;
-        }
-        showFlashcard();
-    });
-/* Đã nhớ */
-document
-    .getElementById("remembered")
-    .addEventListener("click", function() {
-        const word =
-            words[currentIndex].chinese;
-        if (!rememberedWords.includes(word)) {
-            rememberedWords.push(word);
-        }
-        localStorage.setItem(
-            "hsk1Remembered",
-            JSON.stringify(rememberedWords)
-        );
-        currentIndex++;
-        if (currentIndex >= words.length) {
-            currentIndex = 0;
-        }
-        showFlashcard();
-    });
-/* Từ trước */
-document
-    .getElementById("previous")
-    .addEventListener("click", function() {
-        currentIndex--;
-        if (currentIndex < 0) {
-            currentIndex = words.length - 1;
-        }
-        showFlashcard();
-    });
-/* Từ tiếp theo */
-document
-    .getElementById("next")
-    .addEventListener("click", function() {
-        currentIndex++;
-        if (currentIndex >= words.length) {
-            currentIndex = 0;
-        }
-        showFlashcard();
-    });
-/* Hiển thị flashcard đầu tiên */
-showFlashcard();
-/* =========================
-   WORD LIST
-========================= */
-const wordList =
-    document.getElementById("wordList");
-function showWords(list) {
-    wordList.innerHTML = "";
-    if (list.length === 0) {
-        wordList.innerHTML = `
-            <p style="text-align:center; color:#888;">
-                Không tìm thấy từ này 😢
-            </p>
-        `;
-        return;
+function showAnswer() {
+    document.getElementById(
+        "answer"
+    ).classList.remove("hidden");
+}
+function speakCurrentWord() {
+    speakChinese(
+        words[currentIndex].chinese
+    );
+}
+function speakCurrentExample() {
+    speakChinese(
+        words[currentIndex].example
+    );
+}
+// ================================
+// NHỚ / CHƯA NHỚ
+// ================================
+function remember() {
+    const word =
+        words[currentIndex].chinese;
+    if (
+        !rememberedWords.includes(word)
+    ) {
+        rememberedWords.push(word);
     }
-    list.forEach(function(word) {
-        const div =
-            document.createElement("div");
-        div.className = "word";
-        div.innerHTML = `
-            <div class="chinese">
-                ${word.chinese}
+    localStorage.setItem(
+        "hsk1Remembered",
+        JSON.stringify(rememberedWords)
+    );
+    updateProgress();
+    nextWord();
+}
+function notRemember() {
+    const word =
+        words[currentIndex].chinese;
+    rememberedWords =
+        rememberedWords.filter(
+            item => item !== word
+        );
+    localStorage.setItem(
+        "hsk1Remembered",
+        JSON.stringify(rememberedWords)
+    );
+    updateProgress();
+    nextWord();
+}
+function updateProgress() {
+    document.getElementById(
+        "progress"
+    ).textContent =
+        "📊 Đã nhớ: "
+        + rememberedWords.length
+        + " / "
+        + words.length;
+}
+// ================================
+// CHUYỂN TỪ
+// ================================
+function nextWord() {
+    if (!words.length) return;
+    currentIndex =
+        (currentIndex + 1)
+        % words.length;
+    updateFlashcard();
+}
+function previousWord() {
+    if (!words.length) return;
+    currentIndex =
+        (
+            currentIndex - 1
+            + words.length
+        )
+        % words.length;
+    updateFlashcard();
+}
+// ================================
+// DANH SÁCH TỪ
+// ================================
+function displayWords(list) {
+    const wordList =
+        document.getElementById(
+            "wordList"
+        );
+    wordList.innerHTML = "";
+    list.forEach(word => {
+        const card =
+            document.createElement(
+                "div"
+            );
+        card.className =
+            "word-card";
+        const example =
+            document.createElement(
+                "div"
+            );
+        example.className =
+            "example hidden";
+        example.innerHTML = `
+            <div>
+                ${escapeHTML(
+                    word.example
+                )}
             </div>
-            <div class="pinyin">
-                ${word.pinyin}
+            <div class="example-pinyin">
+                ${escapeHTML(
+                    word.examplePinyin
+                )}
             </div>
-            <div class="meaning">
-                ${word.meaning}
-            </div>
-            <div class="detail">
-                <strong>例句 · Câu ví dụ</strong>
-                <div class="example">
-                    ${word.example}
-                </div>
-                <div class="example-pinyin">
-                    ${word.examplePinyin}
-                </div>
-                <div class="example-meaning">
-                    ${word.exampleMeaning}
-                </div>
-                <button class="speak speak-example">
-                    🔊 Nghe câu
-                </button>
+            <div class="example-meaning">
+                ${escapeHTML(
+                    word.exampleMeaning
+                )}
             </div>
         `;
-        const exampleButton =
-            div.querySelector(".speak-example");
-        exampleButton.addEventListener(
-            "click",
+        const button =
+            document.createElement(
+                "button"
+            );
+        button.className =
+            "listen";
+        button.textContent =
+            "🔊 Nghe câu";
+        button.onclick =
             function(event) {
                 event.stopPropagation();
-                speakChinese(word.example);
-            }
-        );
-        div.addEventListener(
+                speakChinese(
+                    word.example
+                );
+            };
+        example.appendChild(button);
+        card.innerHTML = `
+            <div class="word">
+                ${escapeHTML(
+                    word.chinese
+                )}
+            </div>
+            <div class="pinyin">
+                ${escapeHTML(
+                    word.pinyin
+                )}
+            </div>
+            <div class="meaning">
+                🇻🇳 ${escapeHTML(
+                    word.meaning
+                )}
+            </div>
+        `;
+        card.appendChild(example);
+        card.addEventListener(
             "click",
             function() {
-                div.classList.toggle("active");
+                example.classList.toggle(
+                    "hidden"
+                );
             }
         );
-        wordList.appendChild(div);
+        wordList.appendChild(card);
     });
 }
-showWords(words);
-/* =========================
-   SEARCH
-========================= */
-const search =
-    document.getElementById("search");
-search.addEventListener(
-    "input",
-    function() {
-        const keyword =
-            search.value
+// ================================
+// TÌM KIẾM
+// ================================
+function searchWords() {
+    const keyword =
+        document.getElementById(
+            "search"
+        ).value
+        .toLowerCase()
+        .trim();
+    const filtered =
+        words.filter(word =>
+            word.chinese.includes(
+                keyword
+            )
+            ||
+            word.pinyin
                 .toLowerCase()
-                .trim();
-        const filtered =
-            words.filter(function(word) {
-                return (
-                    word.chinese.includes(keyword) ||
-                    word.pinyin
-                        .toLowerCase()
-                        .includes(keyword) ||
-                    word.meaning
-                        .toLowerCase()
-                        .includes(keyword)
-                );
-            });
-        showWords(filtered);
-    }
-);
+                .includes(keyword)
+            ||
+            word.meaning
+                .toLowerCase()
+                .includes(keyword)
+        );
+    displayWords(filtered);
+}
+// ================================
+// BẢO VỆ HTML
+// ================================
+function escapeHTML(text) {
+    return String(text)
+        .replace(
+            /[&<>"']/g,
+            function(match) {
+                return {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#039;"
+                }[match];
+            }
+        );
+}
+// ================================
+// KHỞI ĐỘNG
+// ================================
+loadWords();
 </script>
 </body>
 </html>
