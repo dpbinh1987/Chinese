@@ -145,6 +145,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
         .word-chinese {
             font-size: 25px;
@@ -166,6 +167,17 @@
         .remembered {
             background: #e8f5e9;
         }
+        .complete {
+            display: none;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
         footer {
             text-align: center;
             color: #888;
@@ -180,6 +192,14 @@
 </header>
 <div class="container">
     <a class="back" href="hsk.html">← Quay lại HSK</a>
+    <!-- HOÀN THÀNH -->
+    <div id="completeBox" class="complete">
+        🎉 Bạn đã nhớ hết các từ trong vòng học này!
+        <br><br>
+        <button class="btn-green" onclick="reviewRemembered()">
+            🔄 Học lại từ đã nhớ
+        </button>
+    </div>
     <!-- FLASHCARD -->
     <div class="flashcard">
         <h2>🃏 Học từ vựng</h2>
@@ -224,7 +244,10 @@
             / <span id="totalNumber">0</span>
         </div>
         <div class="progress">
-            📊 Đã nhớ: <span id="rememberedCount">0</span>
+            📊 Đã nhớ:
+            <span id="rememberedCount">0</span>
+            /
+            <span id="totalRemembered">0</span>
         </div>
     </div>
     <!-- SEARCH -->
@@ -247,9 +270,10 @@
 </footer>
 <script>
 let words = [];
+let studyWords = [];
 let currentIndex = 0;
 /* =========================
-   LƯU TỪ ĐÃ NHỚ
+   TỪ ĐÃ NHỚ
 ========================= */
 let rememberedWords = JSON.parse(
     localStorage.getItem("hsk1Remembered") || "[]"
@@ -258,25 +282,30 @@ let rememberedWords = JSON.parse(
    ĐỌC TIẾNG TRUNG
 ========================= */
 function speakChinese(text) {
-    const speech = new SpeechSynthesisUtterance(text);
+    const speech =
+        new SpeechSynthesisUtterance(text);
     speech.lang = "zh-CN";
     speech.rate = 0.8;
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(speech);
 }
 /* =========================
-   ĐỌC TỪ HIỆN TẠI
+   ĐỌC TỪ
 ========================= */
 function speakCurrentWord() {
-    if (words.length === 0) return;
-    speakChinese(words[currentIndex].chinese);
+    if (studyWords.length === 0) return;
+    speakChinese(
+        studyWords[currentIndex].chinese
+    );
 }
 /* =========================
-   ĐỌC CÂU VÍ DỤ
+   ĐỌC CÂU
 ========================= */
 function speakExample() {
-    if (words.length === 0) return;
-    speakChinese(words[currentIndex].example);
+    if (studyWords.length === 0) return;
+    speakChinese(
+        studyWords[currentIndex].example
+    );
 }
 /* =========================
    PARSE CSV
@@ -289,20 +318,37 @@ function parseCSV(text) {
     for (let i = 0; i < text.length; i++) {
         const char = text[i];
         const next = text[i + 1];
-        if (char === '"' && insideQuotes && next === '"') {
+        if (
+            char === '"' &&
+            insideQuotes &&
+            next === '"'
+        ) {
             value += '"';
             i++;
         } else if (char === '"') {
             insideQuotes = !insideQuotes;
-        } else if (char === "," && !insideQuotes) {
+        } else if (
+            char === "," &&
+            !insideQuotes
+        ) {
             row.push(value);
             value = "";
-        } else if ((char === "\n" || char === "\r") && !insideQuotes) {
-            if (char === "\r" && next === "\n") {
+        } else if (
+            (char === "\n" || char === "\r") &&
+            !insideQuotes
+        ) {
+            if (
+                char === "\r" &&
+                next === "\n"
+            ) {
                 i++;
             }
             row.push(value);
-            if (row.some(cell => cell.trim() !== "")) {
+            if (
+                row.some(
+                    cell => cell.trim() !== ""
+                )
+            ) {
                 rows.push(row);
             }
             row = [];
@@ -311,9 +357,16 @@ function parseCSV(text) {
             value += char;
         }
     }
-    if (value !== "" || row.length > 0) {
+    if (
+        value !== "" ||
+        row.length > 0
+    ) {
         row.push(value);
-        if (row.some(cell => cell.trim() !== "")) {
+        if (
+            row.some(
+                cell => cell.trim() !== ""
+            )
+        ) {
             rows.push(row);
         }
     }
@@ -324,72 +377,181 @@ function parseCSV(text) {
 ========================= */
 async function loadWords() {
     try {
-        const response = await fetch("hsk1.csv");
+        const response =
+            await fetch("hsk1.csv");
         if (!response.ok) {
-            throw new Error("Không đọc được file hsk1.csv");
+            throw new Error(
+                "Không đọc được file hsk1.csv"
+            );
         }
-        const text = await response.text();
-        const rows = parseCSV(text);
-        words = rows
-            .slice(1)
-            .filter(row => row.length >= 6)
-            .map(row => ({
-                chinese: row[0].trim(),
-                pinyin: row[1].trim(),
-                meaning: row[2].trim(),
-                example: row[3].trim(),
-                examplePinyin: row[4].trim(),
-                exampleMeaning: row[5].trim()
-            }));
+        const text =
+            await response.text();
+        const rows =
+            parseCSV(text);
+        words =
+            rows
+                .slice(1)
+                .filter(
+                    row => row.length >= 6
+                )
+                .map(row => ({
+                    chinese:
+                        row[0].trim(),
+                    pinyin:
+                        row[1].trim(),
+                    meaning:
+                        row[2].trim(),
+                    example:
+                        row[3].trim(),
+                    examplePinyin:
+                        row[4].trim(),
+                    exampleMeaning:
+                        row[5].trim()
+                }));
         if (words.length === 0) {
-            throw new Error("File CSV không có dữ liệu.");
+            throw new Error(
+                "File CSV không có dữ liệu."
+            );
         }
-        document.getElementById("totalNumber").textContent =
+        document.getElementById(
+            "totalNumber"
+        ).textContent =
             words.length;
-        updateFlashcard();
+        document.getElementById(
+            "totalRemembered"
+        ).textContent =
+            words.length;
+        /*
+           Chỉ lấy những từ CHƯA nhớ
+        */
+        createStudyList();
         displayWords(words);
         updateRememberedCount();
     } catch (error) {
-        document.getElementById("flashWord").textContent = "⚠️ Lỗi";
-        document.getElementById("flashPinyin").textContent =
+        document.getElementById(
+            "flashWord"
+        ).textContent =
+            "⚠️ Lỗi";
+        document.getElementById(
+            "flashPinyin"
+        ).textContent =
             error.message;
     }
 }
 /* =========================
-   HIỂN THỊ FLASHCARD
+   TẠO DANH SÁCH HỌC
+========================= */
+function createStudyList() {
+    studyWords =
+        words.filter(
+            word =>
+                !rememberedWords.includes(
+                    word.chinese
+                )
+        );
+    currentIndex = 0;
+    checkCompleted();
+    updateFlashcard();
+}
+/* =========================
+   KIỂM TRA HOÀN THÀNH
+========================= */
+function checkCompleted() {
+    const completeBox =
+        document.getElementById(
+            "completeBox"
+        );
+    if (studyWords.length === 0) {
+        completeBox.style.display =
+            "block";
+    } else {
+        completeBox.style.display =
+            "none";
+    }
+}
+/* =========================
+   FLASHCARD
 ========================= */
 function updateFlashcard() {
-    if (words.length === 0) return;
-    const word = words[currentIndex];
-    document.getElementById("flashWord").textContent =
+    if (studyWords.length === 0) {
+        document.getElementById(
+            "flashWord"
+        ).textContent =
+            "🎉 Hoàn thành!";
+        document.getElementById(
+            "flashPinyin"
+        ).textContent =
+            "Bạn đã nhớ hết các từ.";
+        document.getElementById(
+            "flashMeaning"
+        ).textContent =
+            "";
+        document.getElementById(
+            "answer"
+        ).style.display =
+            "none";
+        return;
+    }
+    const word =
+        studyWords[currentIndex];
+    document.getElementById(
+        "flashWord"
+    ).textContent =
         word.chinese;
-    document.getElementById("flashPinyin").textContent =
+    document.getElementById(
+        "flashPinyin"
+    ).textContent =
         word.pinyin;
-    document.getElementById("flashMeaning").textContent =
+    document.getElementById(
+        "flashMeaning"
+    ).textContent =
         word.meaning;
-    document.getElementById("exampleChinese").textContent =
+    document.getElementById(
+        "exampleChinese"
+    ).textContent =
         word.example;
-    document.getElementById("examplePinyin").textContent =
+    document.getElementById(
+        "examplePinyin"
+    ).textContent =
         word.examplePinyin;
-    document.getElementById("exampleMeaning").textContent =
+    document.getElementById(
+        "exampleMeaning"
+    ).textContent =
         word.exampleMeaning;
-    document.getElementById("currentNumber").textContent =
+    document.getElementById(
+        "currentNumber"
+    ).textContent =
         currentIndex + 1;
-    document.getElementById("answer").style.display = "none";
+    document.getElementById(
+        "totalNumber"
+    ).textContent =
+        studyWords.length;
+    document.getElementById(
+        "answer"
+    ).style.display =
+        "none";
 }
 /* =========================
    HIỆN ĐÁP ÁN
 ========================= */
 function showAnswer() {
-    document.getElementById("answer").style.display = "block";
+    document.getElementById(
+        "answer"
+    ).style.display =
+        "block";
 }
 /* =========================
    TỪ TIẾP THEO
 ========================= */
 function nextWord() {
-    if (words.length === 0) return;
+    if (studyWords.length === 0) {
+        return;
+    }
     currentIndex++;
-    if (currentIndex >= words.length) {
+    if (
+        currentIndex >=
+        studyWords.length
+    ) {
         currentIndex = 0;
     }
     updateFlashcard();
@@ -398,57 +560,138 @@ function nextWord() {
    TỪ TRƯỚC
 ========================= */
 function previousWord() {
-    if (words.length === 0) return;
+    if (studyWords.length === 0) {
+        return;
+    }
     currentIndex--;
     if (currentIndex < 0) {
-        currentIndex = words.length - 1;
+        currentIndex =
+            studyWords.length - 1;
     }
     updateFlashcard();
 }
 /* =========================
-   ĐÁNH DẤU ĐÃ NHỚ
+   ĐÃ NHỚ
 ========================= */
 function rememberCurrent() {
-    if (words.length === 0) return;
-    const word = words[currentIndex].chinese;
-    if (!rememberedWords.includes(word)) {
+    if (studyWords.length === 0) {
+        return;
+    }
+    const word =
+        studyWords[currentIndex].chinese;
+    if (
+        !rememberedWords.includes(word)
+    ) {
         rememberedWords.push(word);
         localStorage.setItem(
             "hsk1Remembered",
-            JSON.stringify(rememberedWords)
+            JSON.stringify(
+                rememberedWords
+            )
         );
     }
+    /*
+       Xóa từ khỏi vòng học
+    */
+    studyWords.splice(
+        currentIndex,
+        1
+    );
+    /*
+       Nếu đã học hết
+    */
+    if (
+        studyWords.length === 0
+    ) {
+        currentIndex = 0;
+        checkCompleted();
+        updateRememberedCount();
+        updateFlashcard();
+        displayWords(words);
+        return;
+    }
+    /*
+       Nếu xóa phần tử cuối
+    */
+    if (
+        currentIndex >=
+        studyWords.length
+    ) {
+        currentIndex = 0;
+    }
     updateRememberedCount();
-    nextWord();
+    updateFlashcard();
+    displayWords(words);
 }
 /* =========================
    CHƯA NHỚ
 ========================= */
 function notRemembered() {
-    if (words.length === 0) return;
+    /*
+       Không xóa từ.
+       Chuyển sang từ tiếp theo.
+       Vì từ vẫn nằm trong studyWords,
+       nó sẽ quay lại ở vòng tiếp theo.
+    */
     nextWord();
 }
 /* =========================
-   CẬP NHẬT SỐ TỪ ĐÃ NHỚ
+   HỌC LẠI TỪ ĐÃ NHỚ
+========================= */
+function reviewRemembered() {
+    /*
+       Xóa trạng thái đã nhớ
+       để học lại toàn bộ.
+    */
+    rememberedWords = [];
+    localStorage.setItem(
+        "hsk1Remembered",
+        JSON.stringify([])
+    );
+    createStudyList();
+    updateRememberedCount();
+    displayWords(words);
+}
+/* =========================
+   SỐ TỪ ĐÃ NHỚ
 ========================= */
 function updateRememberedCount() {
-    document.getElementById("rememberedCount").textContent =
+    document.getElementById(
+        "rememberedCount"
+    ).textContent =
         rememberedWords.length;
 }
 /* =========================
-   HIỂN THỊ DANH SÁCH TỪ
+   DANH SÁCH TỪ
 ========================= */
 function displayWords(list) {
     const wordList =
-        document.getElementById("wordList");
+        document.getElementById(
+            "wordList"
+        );
     wordList.innerHTML = "";
-    list.forEach((word, index) => {
+    list.forEach(word => {
         const div =
-            document.createElement("div");
-        div.className = "word-card";
-        if (rememberedWords.includes(word.chinese)) {
-            div.classList.add("remembered");
+            document.createElement(
+                "div"
+            );
+        div.className =
+            "word-card";
+        if (
+            rememberedWords.includes(
+                word.chinese
+            )
+        ) {
+            div.classList.add(
+                "remembered"
+            );
         }
+        const safeExample =
+            word.example
+                .replace(
+                    /'/g,
+                    "\\'"
+                );
         div.innerHTML = `
             <div class="word-main">
                 <div>
@@ -475,21 +718,29 @@ function displayWords(list) {
                 </div>
                 <button
                     class="btn-red"
-                    onclick="event.stopPropagation(); speakChinese('${word.example.replace(/'/g, "\\'")}')"
+                    onclick="event.stopPropagation(); speakChinese('${safeExample}')"
                 >
                     🔊 Nghe câu
                 </button>
             </div>
         `;
-        div.onclick = function () {
-            const detail =
-                div.querySelector(".word-detail");
-            if (detail.style.display === "block") {
-                detail.style.display = "none";
-            } else {
-                detail.style.display = "block";
-            }
-        };
+        div.onclick =
+            function () {
+                const detail =
+                    div.querySelector(
+                        ".word-detail"
+                    );
+                if (
+                    detail.style.display ===
+                    "block"
+                ) {
+                    detail.style.display =
+                        "none";
+                } else {
+                    detail.style.display =
+                        "block";
+                }
+            };
         wordList.appendChild(div);
     });
 }
@@ -498,7 +749,9 @@ function displayWords(list) {
 ========================= */
 function searchWords() {
     const keyword =
-        document.getElementById("searchInput")
+        document.getElementById(
+            "searchInput"
+        )
         .value
         .toLowerCase()
         .trim();
@@ -508,9 +761,17 @@ function searchWords() {
     }
     const result =
         words.filter(word =>
-            word.chinese.toLowerCase().includes(keyword) ||
-            word.pinyin.toLowerCase().includes(keyword) ||
-            word.meaning.toLowerCase().includes(keyword)
+            word.chinese
+                .toLowerCase()
+                .includes(keyword)
+            ||
+            word.pinyin
+                .toLowerCase()
+                .includes(keyword)
+            ||
+            word.meaning
+                .toLowerCase()
+                .includes(keyword)
         );
     displayWords(result);
 }
