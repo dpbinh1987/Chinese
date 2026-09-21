@@ -47,6 +47,96 @@
             font-size: 16px;
             margin-bottom: 20px;
         }
+        /* =========================
+           FLASHCARD
+        ========================= */
+        .flashcard-box {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .flashcard-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+        .flashcard-chinese {
+            font-size: 48px;
+            font-weight: bold;
+            color: #c62828;
+            margin: 20px 0;
+        }
+        .flashcard-question {
+            font-size: 18px;
+            color: #555;
+            margin: 20px 0;
+        }
+        .answer {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        .answer.show {
+            display: block;
+        }
+        .answer-meaning {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .answer-pinyin {
+            margin-top: 8px;
+            font-size: 18px;
+            color: #666;
+        }
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .speak {
+            background: #c62828;
+            color: white;
+            margin: 5px;
+        }
+        .speak:hover {
+            background: #a91f1f;
+        }
+        .show-answer {
+            background: #333;
+            color: white;
+            margin-top: 15px;
+        }
+        .show-answer:hover {
+            background: #111;
+        }
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        .navigation button {
+            background: #eee;
+            color: #333;
+        }
+        .navigation button:hover {
+            background: #ddd;
+        }
+        .counter {
+            margin-top: 15px;
+            color: #888;
+            font-size: 14px;
+        }
+        /* =========================
+           WORD LIST
+        ========================= */
         .word {
             background: white;
             padding: 20px;
@@ -73,26 +163,6 @@
             font-size: 17px;
             margin-top: 8px;
         }
-        .speak {
-            margin-top: 12px;
-            margin-right: 8px;
-            padding: 8px 14px;
-            border: none;
-            border-radius: 8px;
-            background: #c62828;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .speak:hover {
-            background: #a91f1f;
-        }
-        .speak-example {
-            background: #555;
-        }
-        .speak-example:hover {
-            background: #333;
-        }
         .detail {
             display: none;
             margin-top: 18px;
@@ -105,7 +175,6 @@
         .example {
             font-size: 22px;
             margin-top: 12px;
-            color: #333;
         }
         .example-pinyin {
             margin-top: 6px;
@@ -132,12 +201,60 @@
 </header>
 <div class="container">
     <a href="hsk.html" class="back">← Quay lại HSK</a>
+    <!-- =========================
+         FLASHCARD
+    ========================= -->
+    <div class="flashcard-box">
+        <div class="flashcard-title">
+            🃏 Học từ vựng
+        </div>
+        <div id="flashcardChinese" class="flashcard-chinese">
+            你好
+        </div>
+        <button id="speakWord" class="speak">
+            🔊 Nghe từ
+        </button>
+        <div class="flashcard-question">
+            ❓ Bạn nhớ nghĩa của từ này không?
+        </div>
+        <button id="showAnswer" class="show-answer">
+            👀 Hiện đáp án
+        </button>
+        <div id="answer" class="answer">
+            <div id="answerMeaning" class="answer-meaning">
+                Xin chào
+            </div>
+            <div id="answerPinyin" class="answer-pinyin">
+                nǐ hǎo
+            </div>
+            <button id="speakExample" class="speak">
+                🔊 Nghe câu ví dụ
+            </button>
+        </div>
+        <div class="navigation">
+            <button id="previous">
+                ← Từ trước
+            </button>
+            <button id="next">
+                Từ tiếp theo →
+            </button>
+        </div>
+        <div id="counter" class="counter">
+            1 / 5
+        </div>
+    </div>
+    <!-- =========================
+         SEARCH
+    ========================= -->
     <input
         type="text"
         id="search"
         class="search"
         placeholder="🔍 Tìm từ tiếng Trung, pinyin hoặc nghĩa..."
     >
+    <!-- =========================
+         WORD LIST
+    ========================= -->
     <div id="wordList"></div>
 </div>
 <footer>
@@ -186,14 +303,88 @@ const words = [
         exampleMeaning: "Tôi là học sinh."
     }
 ];
-const wordList = document.getElementById("wordList");
-function speakChinese(text, rate = 0.8) {
-    const speech = new SpeechSynthesisUtterance(text);
+/* =========================
+   PHÁT ÂM
+========================= */
+function speakChinese(text) {
+    const speech =
+        new SpeechSynthesisUtterance(text);
     speech.lang = "zh-CN";
-    speech.rate = rate;
+    speech.rate = 0.8;
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(speech);
 }
+/* =========================
+   FLASHCARD
+========================= */
+let currentIndex = 0;
+const flashcardChinese =
+    document.getElementById("flashcardChinese");
+const answer =
+    document.getElementById("answer");
+const answerMeaning =
+    document.getElementById("answerMeaning");
+const answerPinyin =
+    document.getElementById("answerPinyin");
+const counter =
+    document.getElementById("counter");
+function showFlashcard() {
+    const word = words[currentIndex];
+    flashcardChinese.textContent =
+        word.chinese;
+    answerMeaning.textContent =
+        word.meaning;
+    answerPinyin.textContent =
+        word.pinyin;
+    counter.textContent =
+        (currentIndex + 1) + " / " + words.length;
+    answer.classList.remove("show");
+}
+/* Hiện đáp án */
+document
+    .getElementById("showAnswer")
+    .addEventListener("click", function() {
+        answer.classList.add("show");
+    });
+/* Đọc từ */
+document
+    .getElementById("speakWord")
+    .addEventListener("click", function() {
+        speakChinese(words[currentIndex].chinese);
+    });
+/* Đọc câu ví dụ */
+document
+    .getElementById("speakExample")
+    .addEventListener("click", function() {
+        speakChinese(words[currentIndex].example);
+    });
+/* Từ trước */
+document
+    .getElementById("previous")
+    .addEventListener("click", function() {
+        currentIndex--;
+        if (currentIndex < 0) {
+            currentIndex = words.length - 1;
+        }
+        showFlashcard();
+    });
+/* Từ tiếp theo */
+document
+    .getElementById("next")
+    .addEventListener("click", function() {
+        currentIndex++;
+        if (currentIndex >= words.length) {
+            currentIndex = 0;
+        }
+        showFlashcard();
+    });
+/* Hiển thị flashcard đầu tiên */
+showFlashcard();
+/* =========================
+   WORD LIST
+========================= */
+const wordList =
+    document.getElementById("wordList");
 function showWords(list) {
     wordList.innerHTML = "";
     if (list.length === 0) {
@@ -205,7 +396,8 @@ function showWords(list) {
         return;
     }
     list.forEach(function(word) {
-        const div = document.createElement("div");
+        const div =
+            document.createElement("div");
         div.className = "word";
         div.innerHTML = `
             <div class="chinese">
@@ -217,9 +409,6 @@ function showWords(list) {
             <div class="meaning">
                 ${word.meaning}
             </div>
-            <button class="speak speak-word" type="button">
-                🔊 Từ
-            </button>
             <div class="detail">
                 <strong>例句 · Câu ví dụ</strong>
                 <div class="example">
@@ -231,62 +420,57 @@ function showWords(list) {
                 <div class="example-meaning">
                     ${word.exampleMeaning}
                 </div>
-                <button class="speak speak-example" type="button">
+                <button class="speak-example speak">
                     🔊 Nghe câu
                 </button>
             </div>
         `;
-        /*
-         * Nút đọc từ
-         */
-        const wordButton = div.querySelector(".speak-word");
-        wordButton.addEventListener("click", function(event) {
-            event.stopPropagation();
-            speakChinese(word.chinese);
-        });
-        /*
-         * Nút đọc câu ví dụ
-         */
         const exampleButton =
             div.querySelector(".speak-example");
-        exampleButton.addEventListener("click", function(event) {
-            event.stopPropagation();
-            speakChinese(word.example);
-        });
-        /*
-         * Click vào card để mở / đóng câu ví dụ
-         */
-        div.addEventListener("click", function() {
-            div.classList.toggle("active");
-        });
+        exampleButton.addEventListener(
+            "click",
+            function(event) {
+                event.stopPropagation();
+                speakChinese(word.example);
+            }
+        );
+        div.addEventListener(
+            "click",
+            function() {
+                div.classList.toggle("active");
+            }
+        );
         wordList.appendChild(div);
     });
 }
-/*
- * Hiển thị toàn bộ từ
- */
 showWords(words);
-/*
- * Tìm kiếm
- */
-const search = document.getElementById("search");
-search.addEventListener("input", function() {
-    const keyword =
-        search.value.toLowerCase().trim();
-    const filtered =
-        words.filter(function(word) {
-            return (
-                word.chinese.includes(keyword) ||
-                word.pinyin
-                    .toLowerCase()
-                    .includes(keyword) ||
-                word.meaning
-                    .toLowerCase()
-                    .includes(keyword)
-            );
-        });
-    showWords(filtered);
-});
+/* =========================
+   SEARCH
+========================= */
+const search =
+    document.getElementById("search");
+search.addEventListener(
+    "input",
+    function() {
+        const keyword =
+            search.value
+                .toLowerCase()
+                .trim();
+        const filtered =
+            words.filter(function(word) {
+                return (
+                    word.chinese.includes(keyword) ||
+                    word.pinyin
+                        .toLowerCase()
+                        .includes(keyword) ||
+                    word.meaning
+                        .toLowerCase()
+                        .includes(keyword)
+                );
+            });
+        showWords(filtered);
+    }
+);
 </script>
 </body>
 </html>
