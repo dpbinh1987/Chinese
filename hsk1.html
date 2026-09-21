@@ -75,6 +75,7 @@
         }
         .speak {
             margin-top: 12px;
+            margin-right: 8px;
             padding: 8px 14px;
             border: none;
             border-radius: 8px;
@@ -85,6 +86,12 @@
         }
         .speak:hover {
             background: #a91f1f;
+        }
+        .speak-example {
+            background: #555;
+        }
+        .speak-example:hover {
+            background: #333;
         }
         .detail {
             display: none;
@@ -180,6 +187,13 @@ const words = [
     }
 ];
 const wordList = document.getElementById("wordList");
+function speakChinese(text, rate = 0.8) {
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "zh-CN";
+    speech.rate = rate;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(speech);
+}
 function showWords(list) {
     wordList.innerHTML = "";
     if (list.length === 0) {
@@ -203,8 +217,8 @@ function showWords(list) {
             <div class="meaning">
                 ${word.meaning}
             </div>
-            <button class="speak" type="button">
-                🔊 Nghe phát âm
+            <button class="speak speak-word" type="button">
+                🔊 Từ
             </button>
             <div class="detail">
                 <strong>例句 · Câu ví dụ</strong>
@@ -217,36 +231,27 @@ function showWords(list) {
                 <div class="example-meaning">
                     ${word.exampleMeaning}
                 </div>
+                <button class="speak speak-example" type="button">
+                    🔊 Nghe câu
+                </button>
             </div>
         `;
         /*
-         * Nút phát âm
+         * Nút đọc từ
          */
-        const button = div.querySelector(".speak");
-        button.addEventListener("click", function(event) {
-            /*
-             * Không cho click nút làm mở/đóng phần ví dụ
-             */
+        const wordButton = div.querySelector(".speak-word");
+        wordButton.addEventListener("click", function(event) {
             event.stopPropagation();
-            const speech =
-                new SpeechSynthesisUtterance(word.chinese);
-            /*
-             * Mandarin / tiếng Trung phổ thông
-             */
-            speech.lang = "zh-CN";
-            /*
-             * Tốc độ đọc
-             * 0.8 = chậm hơn bình thường
-             */
-            speech.rate = 0.8;
-            /*
-             * Nếu đang đọc từ khác thì dừng trước
-             */
-            window.speechSynthesis.cancel();
-            /*
-             * Bắt đầu đọc
-             */
-            window.speechSynthesis.speak(speech);
+            speakChinese(word.chinese);
+        });
+        /*
+         * Nút đọc câu ví dụ
+         */
+        const exampleButton =
+            div.querySelector(".speak-example");
+        exampleButton.addEventListener("click", function(event) {
+            event.stopPropagation();
+            speakChinese(word.example);
         });
         /*
          * Click vào card để mở / đóng câu ví dụ
@@ -258,11 +263,11 @@ function showWords(list) {
     });
 }
 /*
- * Hiển thị toàn bộ từ khi mở trang
+ * Hiển thị toàn bộ từ
  */
 showWords(words);
 /*
- * Chức năng tìm kiếm
+ * Tìm kiếm
  */
 const search = document.getElementById("search");
 search.addEventListener("input", function() {
