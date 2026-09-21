@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Chinese Learning</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        header {
+            background: #c62828;
+            color: white;
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        header p {
+            font-size: 18px;
+            margin-top: 12px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .search {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,0.08);
+
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 45px;
+        }
+
+        .card h2 {
+            margin: 15px 0 8px;
+        }
+
+        .card p {
+            color: #777;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>🇨🇳 Chinese Learning</h1>
+
+    <p>学中文，天天进步！</p>
+
+</header>
+
+
+<div class="container">
+
+    <input
+        type="text"
+        class="search"
+        placeholder="搜索 Search..."
+    >
+
+
+    <div class="menu">
+
+        <div class="card">
+            <div class="icon">📚</div>
+            <h2>HSK</h2>
+            <p>HSK 词汇学习</p>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">🗣️</div>
+            <h2>发音</h2>
+            <p>练习普通话发音</p>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">📖</div>
+            <h2>课文</h2>
+            <p>中文课文学习</p>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">🎧</div>
+            <h2>听力</h2>
+            <p>中文听力练习</p>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">✍️</div>
+            <h2>汉字</h2>
+            <p>汉字书写练习</p>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">💬</div>
+            <h2>口语</h2>
+            <p>中文口语练习</p>
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    Chinese Learning © 2026
+
+</footer>
+
+</body>
+
+</html>
