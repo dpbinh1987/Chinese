@@ -195,11 +195,9 @@
 </header>
 <div class="container">
     <a class="back" href="hsk.html">← Quay lại HSK</a>
-    <!-- THÔNG BÁO HOÀN THÀNH -->
     <div id="completeBox" class="complete">
         🎉 Bạn đã nhớ hết các từ trong vòng học này!
     </div>
-    <!-- FLASHCARD -->
     <div class="flashcard">
         <h2>🃏 Học từ vựng</h2>
         <div id="flashWord">Đang tải...</div>
@@ -249,7 +247,6 @@
             /
             <span id="totalRemembered">0</span>
         </div>
-        <!-- NÚT LUÔN HIỂN THỊ -->
         <div class="review-button">
             <button
                 class="btn-orange"
@@ -259,7 +256,6 @@
             </button>
         </div>
     </div>
-    <!-- SEARCH -->
     <div class="search-box">
         <h2>🔍 Tìm từ</h2>
         <input
@@ -269,7 +265,6 @@
             oninput="searchWords()"
         >
     </div>
-    <!-- WORD LIST -->
     <div class="word-list" id="wordList">
         Đang tải dữ liệu...
     </div>
@@ -279,6 +274,11 @@
 </footer>
 <script>
 let words = [];
+/*
+   Hàng đợi học.
+   Ví dụ:
+   你好 → 我 → 你
+*/
 let studyWords = [];
 let currentIndex = 0;
 /* =========================
@@ -299,7 +299,7 @@ function speakChinese(text) {
     window.speechSynthesis.speak(speech);
 }
 /* =========================
-   ĐỌC TỪ HIỆN TẠI
+   ĐỌC TỪ
 ========================= */
 function speakCurrentWord() {
     if (studyWords.length === 0) return;
@@ -308,7 +308,7 @@ function speakCurrentWord() {
     );
 }
 /* =========================
-   ĐỌC CÂU VÍ DỤ
+   ĐỌC CÂU
 ========================= */
 function speakExample() {
     if (studyWords.length === 0) return;
@@ -404,18 +404,12 @@ async function loadWords() {
                     row => row.length >= 6
                 )
                 .map(row => ({
-                    chinese:
-                        row[0].trim(),
-                    pinyin:
-                        row[1].trim(),
-                    meaning:
-                        row[2].trim(),
-                    example:
-                        row[3].trim(),
-                    examplePinyin:
-                        row[4].trim(),
-                    exampleMeaning:
-                        row[5].trim()
+                    chinese: row[0].trim(),
+                    pinyin: row[1].trim(),
+                    meaning: row[2].trim(),
+                    example: row[3].trim(),
+                    examplePinyin: row[4].trim(),
+                    exampleMeaning: row[5].trim()
                 }));
         if (words.length === 0) {
             throw new Error(
@@ -441,9 +435,12 @@ async function loadWords() {
     }
 }
 /* =========================
-   TẠO DANH SÁCH HỌC
+   TẠO HÀNG ĐỢI
 ========================= */
 function createStudyList() {
+    /*
+       Chỉ lấy từ chưa nhớ.
+    */
     studyWords =
         words.filter(
             word =>
@@ -456,7 +453,7 @@ function createStudyList() {
     updateFlashcard();
 }
 /* =========================
-   KIỂM TRA HOÀN THÀNH
+   HOÀN THÀNH
 ========================= */
 function checkCompleted() {
     const completeBox =
@@ -472,7 +469,7 @@ function checkCompleted() {
     }
 }
 /* =========================
-   CẬP NHẬT FLASHCARD
+   FLASHCARD
 ========================= */
 function updateFlashcard() {
     if (studyWords.length === 0) {
@@ -484,10 +481,6 @@ function updateFlashcard() {
             "flashPinyin"
         ).textContent =
             "Bạn đã nhớ hết các từ.";
-        document.getElementById(
-            "flashMeaning"
-        ).textContent =
-            "";
         document.getElementById(
             "answer"
         ).style.display =
@@ -601,12 +594,15 @@ function rememberCurrent() {
         );
     }
     /*
-       Xóa khỏi vòng học
+       Xóa từ khỏi hàng đợi.
     */
     studyWords.splice(
         currentIndex,
         1
     );
+    /*
+       Nếu đã nhớ hết.
+    */
     if (
         studyWords.length === 0
     ) {
@@ -617,6 +613,10 @@ function rememberCurrent() {
         displayWords(words);
         return;
     }
+    /*
+       Nếu vừa xóa từ cuối,
+       quay về từ đầu.
+    */
     if (
         currentIndex >=
         studyWords.length
@@ -635,17 +635,43 @@ function notRemembered() {
         return;
     }
     /*
-       Không xóa từ.
-       Từ này sẽ tiếp tục xuất hiện
-       trong vòng học.
+       Lấy từ hiện tại.
     */
-    nextWord();
+    const currentWord =
+        studyWords[currentIndex];
+    /*
+       Xóa nó khỏi vị trí hiện tại.
+    */
+    studyWords.splice(
+        currentIndex,
+        1
+    );
+    /*
+       Đưa xuống cuối hàng đợi.
+    */
+    studyWords.push(
+        currentWord
+    );
+    /*
+       currentIndex vẫn giữ nguyên.
+       Vì từ tiếp theo đã được
+       đưa lên vị trí hiện tại.
+    */
+    if (
+        currentIndex >=
+        studyWords.length
+    ) {
+        currentIndex = 0;
+    }
+    updateFlashcard();
 }
 /* =========================
    HỌC LẠI TỪ ĐÃ NHỚ
 ========================= */
 function reviewRemembered() {
-    if (rememberedWords.length === 0) {
+    if (
+        rememberedWords.length === 0
+    ) {
         alert(
             "Bạn chưa có từ nào được đánh dấu Đã nhớ."
         );
@@ -658,17 +684,11 @@ function reviewRemembered() {
     if (!confirmReview) {
         return;
     }
-    /*
-       Xóa trạng thái đã nhớ
-    */
     rememberedWords = [];
     localStorage.setItem(
         "hsk1Remembered",
         JSON.stringify([])
     );
-    /*
-       Tạo lại vòng học
-    */
     createStudyList();
     updateRememberedCount();
     displayWords(words);
@@ -708,11 +728,10 @@ function displayWords(list) {
             );
         }
         const safeExample =
-            word.example
-                .replace(
-                    /'/g,
-                    "\\'"
-                );
+            word.example.replace(
+                /'/g,
+                "\\'"
+            );
         div.innerHTML = `
             <div class="word-main">
                 <div>
