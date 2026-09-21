@@ -1,341 +1,287 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-
+<html lang="vi">
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HSK 1 - Chinese Learning</title>
-
     <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background: #f5f7fa;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
             color: #333;
         }
-
         header {
             background: #c62828;
             color: white;
             text-align: center;
-            padding: 40px 20px;
+            padding: 25px 15px;
         }
-
         header h1 {
             margin: 0;
-            font-size: 34px;
+            font-size: 30px;
         }
-
         header p {
-            font-size: 18px;
-            margin-top: 10px;
+            margin: 8px 0 0;
+            font-size: 16px;
         }
-
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 30px auto;
-            padding: 20px;
+            padding: 0 15px;
         }
-
         .back {
             display: inline-block;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             color: #c62828;
             text-decoration: none;
+            font-weight: bold;
         }
-
         .search {
             width: 100%;
-            padding: 15px;
+            box-sizing: border-box;
+            padding: 14px;
             border: 1px solid #ddd;
             border-radius: 10px;
             font-size: 16px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
-
         .word {
             background: white;
             padding: 20px;
             margin-bottom: 15px;
             border-radius: 12px;
-
-            box-shadow:
-                0 3px 10px rgba(0,0,0,0.08);
-
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
             cursor: pointer;
-
             transition: 0.2s;
         }
-
         .word:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
-
         .chinese {
-            font-size: 30px;
+            font-size: 32px;
             font-weight: bold;
+            color: #c62828;
         }
-
         .pinyin {
             font-size: 18px;
-            color: #c62828;
+            color: #555;
             margin-top: 5px;
         }
-
         .meaning {
-            color: #666;
+            font-size: 17px;
             margin-top: 8px;
         }
-
+        .speak {
+            margin-top: 12px;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            background: #c62828;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .speak:hover {
+            background: #a91f1f;
+        }
         .detail {
             display: none;
-            border-top: 1px solid #eee;
-            margin-top: 15px;
+            margin-top: 18px;
             padding-top: 15px;
+            border-top: 1px solid #eee;
         }
-
         .word.active .detail {
             display: block;
         }
-
         .example {
-            font-size: 20px;
-            margin-top: 10px;
+            font-size: 22px;
+            margin-top: 12px;
+            color: #333;
         }
-
         .example-pinyin {
-            color: #c62828;
-            margin-top: 5px;
-        }
-
-        .example-meaning {
+            margin-top: 6px;
             color: #666;
-            margin-top: 5px;
+            font-size: 16px;
         }
-
+        .example-meaning {
+            margin-top: 6px;
+            color: #555;
+            font-size: 16px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 15px;
+            color: #888;
+            font-size: 14px;
+        }
     </style>
-
 </head>
-
-
 <body>
-
-
 <header>
-
     <h1>📕 HSK 1</h1>
-
     <p>基础汉语词汇</p>
-
 </header>
-
-
 <div class="container">
-
-
-    <a href="hsk.html" class="back">
-        ← 回到 HSK
-    </a>
-
-
+    <a href="hsk.html" class="back">← Quay lại HSK</a>
     <input
         type="text"
         id="search"
         class="search"
-        placeholder="搜索 Search..."
+        placeholder="🔍 Tìm từ tiếng Trung, pinyin hoặc nghĩa..."
     >
-
-
     <div id="wordList"></div>
-
-
 </div>
-
-
+<footer>
+    Chinese Learning © 2026
+</footer>
 <script>
-
-
 const words = [
-
     {
         chinese: "你好",
         pinyin: "nǐ hǎo",
         meaning: "Xin chào",
-
         example: "你好！你叫什么名字？",
-
         examplePinyin: "Nǐ hǎo! Nǐ jiào shénme míngzi?",
-
         exampleMeaning: "Xin chào! Bạn tên là gì?"
     },
-
-
     {
         chinese: "我",
         pinyin: "wǒ",
         meaning: "Tôi",
-
         example: "我是学生。",
-
         examplePinyin: "Wǒ shì xuésheng.",
-
         exampleMeaning: "Tôi là học sinh."
     },
-
-
     {
         chinese: "你",
         pinyin: "nǐ",
         meaning: "Bạn",
-
         example: "你好吗？",
-
         examplePinyin: "Nǐ hǎo ma?",
-
         exampleMeaning: "Bạn khỏe không?"
     },
-
-
     {
         chinese: "他",
         pinyin: "tā",
         meaning: "Anh ấy",
-
         example: "他是老师。",
-
         examplePinyin: "Tā shì lǎoshī.",
-
         exampleMeaning: "Anh ấy là giáo viên."
     },
-
-
     {
         chinese: "学生",
         pinyin: "xuésheng",
         meaning: "Học sinh",
-
         example: "我是学生。",
-
         examplePinyin: "Wǒ shì xuésheng.",
-
         exampleMeaning: "Tôi là học sinh."
     }
-
 ];
-
-
 const wordList = document.getElementById("wordList");
-
-
 function showWords(list) {
-
     wordList.innerHTML = "";
-
-
+    if (list.length === 0) {
+        wordList.innerHTML = `
+            <p style="text-align:center; color:#888;">
+                Không tìm thấy từ này 😢
+            </p>
+        `;
+        return;
+    }
     list.forEach(function(word) {
-
         const div = document.createElement("div");
-
         div.className = "word";
-
-
         div.innerHTML = `
-
             <div class="chinese">
                 ${word.chinese}
             </div>
-
             <div class="pinyin">
                 ${word.pinyin}
             </div>
-
             <div class="meaning">
                 ${word.meaning}
             </div>
-
-
+            <button class="speak" type="button">
+                🔊 Nghe phát âm
+            </button>
             <div class="detail">
-
                 <strong>例句 · Câu ví dụ</strong>
-
                 <div class="example">
                     ${word.example}
                 </div>
-
                 <div class="example-pinyin">
                     ${word.examplePinyin}
                 </div>
-
                 <div class="example-meaning">
                     ${word.exampleMeaning}
                 </div>
-
             </div>
-
         `;
-
-
-        div.addEventListener("click", function() {
-
-            div.classList.toggle("active");
-
+        /*
+         * Nút phát âm
+         */
+        const button = div.querySelector(".speak");
+        button.addEventListener("click", function(event) {
+            /*
+             * Không cho click nút làm mở/đóng phần ví dụ
+             */
+            event.stopPropagation();
+            const speech =
+                new SpeechSynthesisUtterance(word.chinese);
+            /*
+             * Mandarin / tiếng Trung phổ thông
+             */
+            speech.lang = "zh-CN";
+            /*
+             * Tốc độ đọc
+             * 0.8 = chậm hơn bình thường
+             */
+            speech.rate = 0.8;
+            /*
+             * Nếu đang đọc từ khác thì dừng trước
+             */
+            window.speechSynthesis.cancel();
+            /*
+             * Bắt đầu đọc
+             */
+            window.speechSynthesis.speak(speech);
         });
-
-
+        /*
+         * Click vào card để mở / đóng câu ví dụ
+         */
+        div.addEventListener("click", function() {
+            div.classList.toggle("active");
+        });
         wordList.appendChild(div);
-
     });
-
 }
-
-
+/*
+ * Hiển thị toàn bộ từ khi mở trang
+ */
 showWords(words);
-
-
+/*
+ * Chức năng tìm kiếm
+ */
 const search = document.getElementById("search");
-
-
 search.addEventListener("input", function() {
-
-    const keyword = search.value.toLowerCase();
-
-
-    const filtered = words.filter(function(word) {
-
-        return (
-
-            word.chinese.includes(keyword) ||
-
-            word.pinyin
-                .toLowerCase()
-                .includes(keyword) ||
-
-            word.meaning
-                .toLowerCase()
-                .includes(keyword)
-
-        );
-
-    });
-
-
+    const keyword =
+        search.value.toLowerCase().trim();
+    const filtered =
+        words.filter(function(word) {
+            return (
+                word.chinese.includes(keyword) ||
+                word.pinyin
+                    .toLowerCase()
+                    .includes(keyword) ||
+                word.meaning
+                    .toLowerCase()
+                    .includes(keyword)
+            );
+        });
     showWords(filtered);
-
 });
-
-
 </script>
-
-
 </body>
-
 </html>
