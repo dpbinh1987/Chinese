@@ -1,16 +1,16 @@
-chinese,pinyin,meaning,example,examplePinyin,exampleMeaning
-你好,nǐ hǎo,Xin chào,你好！你叫什么名字？,Nǐ hǎo! Nǐ jiào shénme míngzi?,Xin chào! Bạn tên là gì?
-我,wǒ,Tôi,我是学生。,Wǒ shì xuésheng.,Tôi là học sinh.
-你,nǐ,Bạn,你好吗？,Nǐ hǎo ma?,Bạn khỏe không?
-他,tā,Anh ấy,他是老师。,Tā shì lǎoshī.,Anh ấy là giáo viên.
-学生,xuésheng,Học sinh,我是学生。,Wǒ shì xuésheng.,Tôi là học sinh.
-是,shì,Là,我是越南人。,Wǒ shì Yuènán rén.,Tôi là người Việt Nam.
-不,bù,Không,我不喝咖啡。,Wǒ bù hē kāfēi.,Tôi không uống cà phê.
-有,yǒu,Có,我有一个弟弟。,Wǒ yǒu yí ge dìdi.,Tôi có một em trai.
-在,zài,Ở; tại,我在家。,Wǒ zài jiā.,Tôi ở nhà.
-的,de,Của; trợ từ,这是我的书。,Zhè shì wǒ de shū.,Đây là sách của tôi.
-人,rén,Người,他是中国人。,Tā shì Zhōngguó rén.,Anh ấy là người Trung Quốc.
-这,zhè,Này; đây,这是我的书。,Zhè shì wǒ de shū.,Đây là sách của tôi.
-那,nà,Kia; đó,那是我的老师。,Nà shì wǒ de lǎoshī.,Kia là giáo viên của tôi.
-哪,nǎ,Nào; đâu,你是哪国人？,Nǐ shì nǎ guó rén?,Bạn là người nước nào?
-谁,shéi,Ai,他是谁？,Tā shì shéi?,Anh ấy là ai?
+chinese,pinyin,meaning,image,example,examplePinyin,exampleMeaning
+你好,nǐ hǎo,Xin chào,images/nihao.jpg,你好！你叫什么名字？,Nǐ hǎo! Nǐ jiào shénme míngzi?,Xin chào! Bạn tên là gì?
+我,wǒ,Tôi,,我是学生。,Wǒ shì xuésheng.,Tôi là học sinh.
+你,nǐ,Bạn,,你好吗？,Nǐ hǎo ma?,Bạn khỏe không?
+他,tā,Anh ấy,,他是老师。,Tā shì lǎoshī.,Anh ấy là giáo viên.
+学生,xuésheng,Học sinh,,我是学生。,Wǒ shì xuésheng.,Tôi là học sinh.
+是,shì,Là,,我是越南人。,Wǒ shì Yuènán rén.,Tôi là người Việt Nam.
+不,bù,Không,,我不喝咖啡。,Wǒ bù hē kāfēi.,Tôi không uống cà phê.
+有,yǒu,Có,,我有一个弟弟。,Wǒ yǒu yí ge dìdi.,Tôi có một em trai.
+在,zài,Ở; tại,,我在家。,Wǒ zài jiā.,Tôi ở nhà.
+的,de,Của; trợ từ,,这是我的书。,Zhè shì wǒ de shū.,Đây là sách của tôi.
+人,rén,Người,,他是中国人。,Tā shì Zhōngguó rén.,Anh ấy là người Trung Quốc.
+这,zhè,Này; đây,,这是我的书。,Zhè shì wǒ de shū.,Đây là sách của tôi.
+那,nà,Kia; đó,,那是我的老师。,Nà shì wǒ de lǎoshī.,Kia là giáo viên của tôi.
+哪,nǎ,Nào; đâu,,你是哪国人？,Nǐ shì nǎ guó rén?,Bạn là người nước nào?
+谁,shéi,Ai,,他是谁？,Tā shì shéi?,Anh ấy là ai?
