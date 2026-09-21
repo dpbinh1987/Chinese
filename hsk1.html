@@ -111,6 +111,9 @@
             color: #2e7d32;
             font-weight: bold;
         }
+        .review-button {
+            margin-top: 10px;
+        }
         .search-box {
             background: white;
             padding: 15px;
@@ -192,13 +195,9 @@
 </header>
 <div class="container">
     <a class="back" href="hsk.html">← Quay lại HSK</a>
-    <!-- HOÀN THÀNH -->
+    <!-- THÔNG BÁO HOÀN THÀNH -->
     <div id="completeBox" class="complete">
         🎉 Bạn đã nhớ hết các từ trong vòng học này!
-        <br><br>
-        <button class="btn-green" onclick="reviewRemembered()">
-            🔄 Học lại từ đã nhớ
-        </button>
     </div>
     <!-- FLASHCARD -->
     <div class="flashcard">
@@ -241,13 +240,23 @@
         </div>
         <div class="counter">
             Từ <span id="currentNumber">0</span>
-            / <span id="totalNumber">0</span>
+            /
+            <span id="totalNumber">0</span>
         </div>
         <div class="progress">
             📊 Đã nhớ:
             <span id="rememberedCount">0</span>
             /
             <span id="totalRemembered">0</span>
+        </div>
+        <!-- NÚT LUÔN HIỂN THỊ -->
+        <div class="review-button">
+            <button
+                class="btn-orange"
+                onclick="reviewRemembered()"
+            >
+                🔄 Học lại từ đã nhớ
+            </button>
         </div>
     </div>
     <!-- SEARCH -->
@@ -290,7 +299,7 @@ function speakChinese(text) {
     window.speechSynthesis.speak(speech);
 }
 /* =========================
-   ĐỌC TỪ
+   ĐỌC TỪ HIỆN TẠI
 ========================= */
 function speakCurrentWord() {
     if (studyWords.length === 0) return;
@@ -299,7 +308,7 @@ function speakCurrentWord() {
     );
 }
 /* =========================
-   ĐỌC CÂU
+   ĐỌC CÂU VÍ DỤ
 ========================= */
 function speakExample() {
     if (studyWords.length === 0) return;
@@ -414,16 +423,9 @@ async function loadWords() {
             );
         }
         document.getElementById(
-            "totalNumber"
-        ).textContent =
-            words.length;
-        document.getElementById(
             "totalRemembered"
         ).textContent =
             words.length;
-        /*
-           Chỉ lấy những từ CHƯA nhớ
-        */
         createStudyList();
         displayWords(words);
         updateRememberedCount();
@@ -470,7 +472,7 @@ function checkCompleted() {
     }
 }
 /* =========================
-   FLASHCARD
+   CẬP NHẬT FLASHCARD
 ========================= */
 function updateFlashcard() {
     if (studyWords.length === 0) {
@@ -490,6 +492,14 @@ function updateFlashcard() {
             "answer"
         ).style.display =
             "none";
+        document.getElementById(
+            "currentNumber"
+        ).textContent =
+            "0";
+        document.getElementById(
+            "totalNumber"
+        ).textContent =
+            "0";
         return;
     }
     const word =
@@ -591,15 +601,12 @@ function rememberCurrent() {
         );
     }
     /*
-       Xóa từ khỏi vòng học
+       Xóa khỏi vòng học
     */
     studyWords.splice(
         currentIndex,
         1
     );
-    /*
-       Nếu đã học hết
-    */
     if (
         studyWords.length === 0
     ) {
@@ -610,9 +617,6 @@ function rememberCurrent() {
         displayWords(words);
         return;
     }
-    /*
-       Nếu xóa phần tử cuối
-    */
     if (
         currentIndex >=
         studyWords.length
@@ -627,11 +631,13 @@ function rememberCurrent() {
    CHƯA NHỚ
 ========================= */
 function notRemembered() {
+    if (studyWords.length === 0) {
+        return;
+    }
     /*
        Không xóa từ.
-       Chuyển sang từ tiếp theo.
-       Vì từ vẫn nằm trong studyWords,
-       nó sẽ quay lại ở vòng tiếp theo.
+       Từ này sẽ tiếp tục xuất hiện
+       trong vòng học.
     */
     nextWord();
 }
@@ -639,15 +645,30 @@ function notRemembered() {
    HỌC LẠI TỪ ĐÃ NHỚ
 ========================= */
 function reviewRemembered() {
+    if (rememberedWords.length === 0) {
+        alert(
+            "Bạn chưa có từ nào được đánh dấu Đã nhớ."
+        );
+        return;
+    }
+    const confirmReview =
+        confirm(
+            "Bạn muốn học lại tất cả các từ đã nhớ?"
+        );
+    if (!confirmReview) {
+        return;
+    }
     /*
        Xóa trạng thái đã nhớ
-       để học lại toàn bộ.
     */
     rememberedWords = [];
     localStorage.setItem(
         "hsk1Remembered",
         JSON.stringify([])
     );
+    /*
+       Tạo lại vòng học
+    */
     createStudyList();
     updateRememberedCount();
     displayWords(words);
