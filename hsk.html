@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>HSK - Chinese Learning</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        header {
+            background: #c62828;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 34px;
+        }
+
+        header p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #c62828;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,0.08);
+
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 45px;
+        }
+
+        .card h2 {
+            margin: 15px 0 8px;
+        }
+
+        .card p {
+            color: #777;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>📚 HSK</h1>
+
+    <p>汉语水平考试</p>
+
+</header>
+
+
+<div class="container">
+
+    <a href="index.html" class="back">
+        ← 回到首页
+    </a>
+
+
+    <div class="menu">
+
+        <div class="card">
+            <div class="icon">📕</div>
+            <h2>HSK 1</h2>
+            <p>基础汉语词汇</p>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">📗</div>
+            <h2>HSK 2</h2>
+            <p>初级汉语词汇</p>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">📘</div>
+            <h2>HSK 3</h2>
+            <p>中级汉语词汇</p>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">📙</div>
+            <h2>HSK 4</h2>
+            <p>中高级汉语词汇</p>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">📔</div>
+            <h2>HSK 5</h2>
+            <p>高级汉语词汇</p>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">📓</div>
+            <h2>HSK 6</h2>
+            <p>高级汉语学习</p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
