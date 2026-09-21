@@ -38,15 +38,6 @@
             text-decoration: none;
             font-weight: bold;
         }
-        .search {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 14px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
         /* =========================
            FLASHCARD
         ========================= */
@@ -93,6 +84,9 @@
             font-size: 18px;
             color: #666;
         }
+        /* =========================
+           BUTTONS
+        ========================= */
         button {
             border: none;
             border-radius: 8px;
@@ -113,8 +107,24 @@
             color: white;
             margin-top: 15px;
         }
-        .show-answer:hover {
-            background: #111;
+        .memory-buttons {
+            margin-top: 20px;
+        }
+        .memory-btn {
+            padding: 10px 18px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .not-remember {
+            background: #eee;
+            color: #333;
+        }
+        .remembered {
+            background: #2e7d32;
+            color: white;
         }
         .navigation {
             display: flex;
@@ -126,13 +136,27 @@
             background: #eee;
             color: #333;
         }
-        .navigation button:hover {
-            background: #ddd;
-        }
         .counter {
             margin-top: 15px;
             color: #888;
             font-size: 14px;
+        }
+        .progress {
+            margin-top: 10px;
+            color: #666;
+            font-size: 16px;
+        }
+        /* =========================
+           SEARCH
+        ========================= */
+        .search {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
         }
         /* =========================
            WORD LIST
@@ -201,9 +225,7 @@
 </header>
 <div class="container">
     <a href="hsk.html" class="back">← Quay lại HSK</a>
-    <!-- =========================
-         FLASHCARD
-    ========================= -->
+    <!-- FLASHCARD -->
     <div class="flashcard-box">
         <div class="flashcard-title">
             🃏 Học từ vựng
@@ -230,6 +252,18 @@
             <button id="speakExample" class="speak">
                 🔊 Nghe câu ví dụ
             </button>
+            <div class="memory-buttons">
+                <button
+                    id="notRemembered"
+                    class="memory-btn not-remember">
+                    ❌ Chưa nhớ
+                </button>
+                <button
+                    id="remembered"
+                    class="memory-btn remembered">
+                    ✅ Đã nhớ
+                </button>
+            </div>
         </div>
         <div class="navigation">
             <button id="previous">
@@ -242,19 +276,18 @@
         <div id="counter" class="counter">
             1 / 5
         </div>
+        <div id="progress" class="progress">
+            📊 Đã nhớ: 0 / 5
+        </div>
     </div>
-    <!-- =========================
-         SEARCH
-    ========================= -->
+    <!-- SEARCH -->
     <input
         type="text"
         id="search"
         class="search"
         placeholder="🔍 Tìm từ tiếng Trung, pinyin hoặc nghĩa..."
     >
-    <!-- =========================
-         WORD LIST
-    ========================= -->
+    <!-- WORD LIST -->
     <div id="wordList"></div>
 </div>
 <footer>
@@ -318,6 +351,10 @@ function speakChinese(text) {
    FLASHCARD
 ========================= */
 let currentIndex = 0;
+/* Đọc trạng thái đã nhớ */
+let rememberedWords = JSON.parse(
+    localStorage.getItem("hsk1Remembered") || "[]"
+);
 const flashcardChinese =
     document.getElementById("flashcardChinese");
 const answer =
@@ -328,6 +365,15 @@ const answerPinyin =
     document.getElementById("answerPinyin");
 const counter =
     document.getElementById("counter");
+const progress =
+    document.getElementById("progress");
+function updateProgress() {
+    progress.textContent =
+        "📊 Đã nhớ: " +
+        rememberedWords.length +
+        " / " +
+        words.length;
+}
 function showFlashcard() {
     const word = words[currentIndex];
     flashcardChinese.textContent =
@@ -337,8 +383,11 @@ function showFlashcard() {
     answerPinyin.textContent =
         word.pinyin;
     counter.textContent =
-        (currentIndex + 1) + " / " + words.length;
+        (currentIndex + 1) +
+        " / " +
+        words.length;
     answer.classList.remove("show");
+    updateProgress();
 }
 /* Hiện đáp án */
 document
@@ -350,13 +399,56 @@ document
 document
     .getElementById("speakWord")
     .addEventListener("click", function() {
-        speakChinese(words[currentIndex].chinese);
+        speakChinese(
+            words[currentIndex].chinese
+        );
     });
 /* Đọc câu ví dụ */
 document
     .getElementById("speakExample")
     .addEventListener("click", function() {
-        speakChinese(words[currentIndex].example);
+        speakChinese(
+            words[currentIndex].example
+        );
+    });
+/* Chưa nhớ */
+document
+    .getElementById("notRemembered")
+    .addEventListener("click", function() {
+        const word =
+            words[currentIndex].chinese;
+        rememberedWords =
+            rememberedWords.filter(function(item) {
+                return item !== word;
+            });
+        localStorage.setItem(
+            "hsk1Remembered",
+            JSON.stringify(rememberedWords)
+        );
+        currentIndex++;
+        if (currentIndex >= words.length) {
+            currentIndex = 0;
+        }
+        showFlashcard();
+    });
+/* Đã nhớ */
+document
+    .getElementById("remembered")
+    .addEventListener("click", function() {
+        const word =
+            words[currentIndex].chinese;
+        if (!rememberedWords.includes(word)) {
+            rememberedWords.push(word);
+        }
+        localStorage.setItem(
+            "hsk1Remembered",
+            JSON.stringify(rememberedWords)
+        );
+        currentIndex++;
+        if (currentIndex >= words.length) {
+            currentIndex = 0;
+        }
+        showFlashcard();
     });
 /* Từ trước */
 document
@@ -420,7 +512,7 @@ function showWords(list) {
                 <div class="example-meaning">
                     ${word.exampleMeaning}
                 </div>
-                <button class="speak-example speak">
+                <button class="speak speak-example">
                     🔊 Nghe câu
                 </button>
             </div>
