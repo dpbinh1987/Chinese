@@ -53,18 +53,31 @@
             text-decoration: none;
         }
 
-        .back:hover {
-            text-decoration: underline;
+        .search {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 25px;
         }
 
         .word {
             background: white;
-            padding: 25px;
+            padding: 20px;
             margin-bottom: 15px;
             border-radius: 12px;
 
             box-shadow:
                 0 3px 10px rgba(0,0,0,0.08);
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .word:hover {
+            transform: translateY(-3px);
         }
 
         .chinese {
@@ -83,12 +96,39 @@
             margin-top: 8px;
         }
 
+        .detail {
+            display: none;
+            border-top: 1px solid #eee;
+            margin-top: 15px;
+            padding-top: 15px;
+        }
+
+        .word.active .detail {
+            display: block;
+        }
+
+        .example {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .example-pinyin {
+            color: #c62828;
+            margin-top: 5px;
+        }
+
+        .example-meaning {
+            color: #666;
+            margin-top: 5px;
+        }
+
     </style>
 
 </head>
 
 
 <body>
+
 
 <header>
 
@@ -101,86 +141,200 @@
 
 <div class="container">
 
+
     <a href="hsk.html" class="back">
         ← 回到 HSK
     </a>
 
 
-    <div class="word">
-
-        <div class="chinese">你好</div>
-
-        <div class="pinyin">
-            nǐ hǎo
-        </div>
-
-        <div class="meaning">
-            Xin chào
-        </div>
-
-    </div>
+    <input
+        type="text"
+        id="search"
+        class="search"
+        placeholder="搜索 Search..."
+    >
 
 
-    <div class="word">
+    <div id="wordList"></div>
 
-        <div class="chinese">我</div>
-
-        <div class="pinyin">
-            wǒ
-        </div>
-
-        <div class="meaning">
-            Tôi
-        </div>
-
-    </div>
-
-
-    <div class="word">
-
-        <div class="chinese">你</div>
-
-        <div class="pinyin">
-            nǐ
-        </div>
-
-        <div class="meaning">
-            Bạn
-        </div>
-
-    </div>
-
-
-    <div class="word">
-
-        <div class="chinese">他</div>
-
-        <div class="pinyin">
-            tā
-        </div>
-
-        <div class="meaning">
-            Anh ấy
-        </div>
-
-    </div>
-
-
-    <div class="word">
-
-        <div class="chinese">学生</div>
-
-        <div class="pinyin">
-            xuésheng
-        </div>
-
-        <div class="meaning">
-            Học sinh
-        </div>
-
-    </div>
 
 </div>
+
+
+<script>
+
+
+const words = [
+
+    {
+        chinese: "你好",
+        pinyin: "nǐ hǎo",
+        meaning: "Xin chào",
+
+        example: "你好！你叫什么名字？",
+
+        examplePinyin: "Nǐ hǎo! Nǐ jiào shénme míngzi?",
+
+        exampleMeaning: "Xin chào! Bạn tên là gì?"
+    },
+
+
+    {
+        chinese: "我",
+        pinyin: "wǒ",
+        meaning: "Tôi",
+
+        example: "我是学生。",
+
+        examplePinyin: "Wǒ shì xuésheng.",
+
+        exampleMeaning: "Tôi là học sinh."
+    },
+
+
+    {
+        chinese: "你",
+        pinyin: "nǐ",
+        meaning: "Bạn",
+
+        example: "你好吗？",
+
+        examplePinyin: "Nǐ hǎo ma?",
+
+        exampleMeaning: "Bạn khỏe không?"
+    },
+
+
+    {
+        chinese: "他",
+        pinyin: "tā",
+        meaning: "Anh ấy",
+
+        example: "他是老师。",
+
+        examplePinyin: "Tā shì lǎoshī.",
+
+        exampleMeaning: "Anh ấy là giáo viên."
+    },
+
+
+    {
+        chinese: "学生",
+        pinyin: "xuésheng",
+        meaning: "Học sinh",
+
+        example: "我是学生。",
+
+        examplePinyin: "Wǒ shì xuésheng.",
+
+        exampleMeaning: "Tôi là học sinh."
+    }
+
+];
+
+
+const wordList = document.getElementById("wordList");
+
+
+function showWords(list) {
+
+    wordList.innerHTML = "";
+
+
+    list.forEach(function(word) {
+
+        const div = document.createElement("div");
+
+        div.className = "word";
+
+
+        div.innerHTML = `
+
+            <div class="chinese">
+                ${word.chinese}
+            </div>
+
+            <div class="pinyin">
+                ${word.pinyin}
+            </div>
+
+            <div class="meaning">
+                ${word.meaning}
+            </div>
+
+
+            <div class="detail">
+
+                <strong>例句 · Câu ví dụ</strong>
+
+                <div class="example">
+                    ${word.example}
+                </div>
+
+                <div class="example-pinyin">
+                    ${word.examplePinyin}
+                </div>
+
+                <div class="example-meaning">
+                    ${word.exampleMeaning}
+                </div>
+
+            </div>
+
+        `;
+
+
+        div.addEventListener("click", function() {
+
+            div.classList.toggle("active");
+
+        });
+
+
+        wordList.appendChild(div);
+
+    });
+
+}
+
+
+showWords(words);
+
+
+const search = document.getElementById("search");
+
+
+search.addEventListener("input", function() {
+
+    const keyword = search.value.toLowerCase();
+
+
+    const filtered = words.filter(function(word) {
+
+        return (
+
+            word.chinese.includes(keyword) ||
+
+            word.pinyin
+                .toLowerCase()
+                .includes(keyword) ||
+
+            word.meaning
+                .toLowerCase()
+                .includes(keyword)
+
+        );
+
+    });
+
+
+    showWords(filtered);
+
+});
+
+
+</script>
+
 
 </body>
 
